@@ -1,17 +1,9 @@
 package qcloud
 
-// CMV is a wrapper of QCloud CVM.
-type CVM struct {
-}
-
-// CLB is a wrapper of QCloud CVM.
-type CLB struct {
-}
-
 // QCloud is an implementation of cloud provider Interface for Tencent Cloud.
 type QCloud struct {
 	cvm    CVM
-	clb    CLB
+	//clb    CLB
 	region string
 }
 
