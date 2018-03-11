@@ -1,0 +1,17 @@
+package: github.com/xiaoxubeii/qcloud-controller-manager
+import:
+- package: github.com/golang/glog
+- package: github.com/spf13/pflag
+- package: k8s.io/apiserver
+  subpackages:
+  - pkg/server/healthz
+  - pkg/util/flag
+  - pkg/util/logs
+- package: k8s.io/kubernetes
+  subpackages:
+  - cmd/cloud-controller-manager/app
+  - cmd/cloud-controller-manager/app/options
+  - pkg/client/metrics/prometheus
+  - pkg/cloudprovider
+  - pkg/version/prometheus
+  - pkg/version/verflag
