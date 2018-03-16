@@ -1,31 +1,44 @@
 package qcloud
 
 import (
-	"github.com/xiaoxubeii/qcloudapi-sdk-go/common"
+	"github.com/dbdd4us/qcloudapi-sdk-go/common"
+	"github.com/dbdd4us/qcloudapi-sdk-go/cvm"
+	"os"
 )
 
-const SECRET_ID = ""
-const SECRET_KEY = ""
-const REGION = ""
+func NewCVMFromEnv() *CVM {
+	secretId := os.Getenv("QCloudSecretId")
+	secretKey := os.Getenv("QCloudSecretKey")
+	region := os.Getenv("QCloudCvmAPIRegion")
+	return commonCred(secretId, secretKey, region)
+}
 
-func NewCVM() CVM {
+func commonCred(secret_id, secretKey, region string) *CVM {
 	credential := common.Credential{
-		SecretId:  SECRET_ID,
-		SecretKey: SECRET_KEY,
+		SecretId:  secret_id,
+		SecretKey: secretKey,
 	}
 
 	opts := common.Opts{
-		Region: REGION,
+		Region: region,
 	}
-
-	client, _ := clb.NewClient(credential, opts)
-	return CVM{client: client}
+	client, _ := cvm.NewClient(credential, opts)
+	return &CVM{client}
 }
 
 type CVM struct {
-	client common.Credential
+	*cvm.Client
 }
 
-func (c *CVM) DescribeInstances() {
+type DescribeInstancesArgs struct {
+	*cvm.DescribeInstancesArgs
+}
 
+type DescribeInstancesResponse struct {
+	*cvm.DescribeInstancesResponse
+}
+
+func (c *CVM) DescribeInstances(args *DescribeInstancesArgs) (*DescribeInstancesResponse, error) {
+	response, error := c.Client.DescribeInstances(args.DescribeInstancesArgs)
+	return &DescribeInstancesResponse{response}, error
 }
