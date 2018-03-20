@@ -13,9 +13,9 @@ func NewCVMFromEnv() *CVM {
 	return commonCred(secretId, secretKey, region)
 }
 
-func commonCred(secret_id, secretKey, region string) *CVM {
+func commonCred(secretId, secretKey, region string) *CVM {
 	credential := common.Credential{
-		SecretId:  secret_id,
+		SecretId:  secretId,
 		SecretKey: secretKey,
 	}
 
