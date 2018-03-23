@@ -6,14 +6,14 @@ import (
 	"os"
 )
 
-func NewCVMFromEnv() *CVM {
+func NewCVMFromEnv() *CVMImpl {
 	secretId := os.Getenv("QCloudSecretId")
 	secretKey := os.Getenv("QCloudSecretKey")
 	region := os.Getenv("QCloudCvmAPIRegion")
 	return commonCred(secretId, secretKey, region)
 }
 
-func commonCred(secretId, secretKey, region string) *CVM {
+func commonCred(secretId, secretKey, region string) *CVMImpl {
 	credential := common.Credential{
 		SecretId:  secretId,
 		SecretKey: secretKey,
@@ -23,10 +23,15 @@ func commonCred(secretId, secretKey, region string) *CVM {
 		Region: region,
 	}
 	client, _ := cvm.NewClient(credential, opts)
-	return &CVM{client}
+	return &CVMImpl{client}
 }
 
-type CVM struct {
+type CVM interface {
+	GetInstanceByName(string) (*InstanceInfo, error)
+	GetInstanceByID(string) (*InstanceInfo, error)
+}
+
+type CVMImpl struct {
 	*cvm.Client
 }
 
@@ -38,7 +43,37 @@ type DescribeInstancesResponse struct {
 	*cvm.DescribeInstancesResponse
 }
 
-func (c *CVM) DescribeInstances(args *DescribeInstancesArgs) (*DescribeInstancesResponse, error) {
-	response, error := c.Client.DescribeInstances(args.DescribeInstancesArgs)
-	return &DescribeInstancesResponse{response}, error
+type InstanceInfo struct {
+	*cvm.InstanceInfo
+}
+
+func NewInstanceInfo() *InstanceInfo {
+	return &InstanceInfo{&cvm.InstanceInfo{}}
+}
+
+func (c *CVMImpl) GetInstanceByName(name string) (*InstanceInfo, error) {
+	filters := [] cvm.Filter{cvm.NewFilter(cvm.FilterNameInstanceName, name)}
+	version := "2017-03-12"
+	args := &cvm.DescribeInstancesArgs{Filters: &filters, Version: version}
+	resp, err := c.Client.DescribeInstances(args)
+	instances := resp.InstanceSet
+
+	if err != nil || len(resp.InstanceSet) == 0 {
+		return &InstanceInfo{}, err
+	}
+
+	return &InstanceInfo{&instances[0]}, nil
+}
+
+func (c *CVMImpl) GetInstanceByID(id string) (*InstanceInfo, error) {
+	version := "2017-03-12"
+	args := &cvm.DescribeInstancesArgs{InstanceIds: &[]string{id}, Version: version}
+	resp, err := c.Client.DescribeInstances(args)
+	instances := resp.InstanceSet
+
+	if err != nil || len(resp.InstanceSet) == 0 {
+		return &InstanceInfo{}, err
+	}
+
+	return &InstanceInfo{&instances[0]}, nil
 }

@@ -1,0 +1,37 @@
+{
+  "InstanceId": "ins-9zdg0x3b",
+  "InstanceType": "S2.SMALL2",
+  "CPU": 1,
+  "Memory": 2,
+  "InstanceName": "bj-qc-oam-testnewlb-001.tendcloud.com",
+  "InstanceChargeType": "POSTPAID_BY_HOUR",
+  "PrivateIpAddresses": [
+    "172.29.1.227"
+  ],
+  "PublicIpAddresses": null,
+  "    ImageId": "img-qxjxv8up",
+  "OsName": "CentOS 7 64位",
+  "RenewFlag": "",
+  "Placement": {
+    "Zone": "ap-beijing-2",
+    "HostId": null,
+    "ProjectId": 0
+  },
+  "SystemDisk": {
+    "DiskType": "CLOUD_BASIC",
+    "DiskId": "disk-l8ehkvu1",
+    "DiskSize": 50
+  },
+  "DataDisks": null,
+  "InternetA    ccessible": {
+    "InternetMaxBandwidthOut": 0,
+    "InternetChargeType": "TRAFFIC_POSTPAID_BY_HOUR"
+  },
+  "VirtualPrivateCloud": {
+    "VpcId": "vpc-efkissva",
+    "SubnetId": "subnet-i6cua54t",
+    "AsVpcGateway": false
+  },
+  "CreatedTime": "2018-02-09T06:17:26Z",
+  "ExpiredTim    e": "0001-01-01T00:00:00Z"
+}
