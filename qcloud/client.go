@@ -13,6 +13,10 @@ func NewCVMFromEnv() *CVMImpl {
 	return commonCred(secretId, secretKey, region)
 }
 
+func NewCVM(config CloudConfig) *CVMImpl {
+	return commonCred(config.Global.SecretID, config.Global.SecretKey, config.Global.Region)
+}
+
 func commonCred(secretId, secretKey, region string) *CVMImpl {
 	credential := common.Credential{
 		SecretId:  secretId,
